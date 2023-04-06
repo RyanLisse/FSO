@@ -24,7 +24,7 @@ const App = () => {
   const [selected, setSelected] = useState(0);
   const [votes, setVotes] = useState(Array(anecdotes.length).fill(0));
 
-  const handleVoteClick = (index) => {
+  const handleVoteClick = (index: any) => {
     const newVotes = [...votes];
     newVotes[index] += 1;
     setVotes(newVotes);
