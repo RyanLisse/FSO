@@ -1,19 +1,13 @@
-import Image from "next/image";
+"use client";
+
 import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
 const Header = ({ course }: any) => {
-  return <div>{course}</div>;
+  console.log("hello from component");
+  return <div>{course.name}</div>;
 };
-
-const course = "Half Stack application development";
-const part1 = "Fundamentals of React";
-const exercises1 = 10;
-const part2 = "Using props to pass data";
-const exercises2 = 7;
-const part3 = "State of a component";
-const exercises3 = 14;
 
 const Part = ({ name, number }: any) => {
   return (
@@ -25,49 +19,52 @@ const Part = ({ name, number }: any) => {
   );
 };
 
-const Content = ({
-  part1,
-  part2,
-  part3,
-  exercises1,
-  exercises2,
-  exercises3,
-}: any) => {
+const Content = ({ course }: any) => {
   return (
     <>
-      <Part name={part1} number={exercises1} />
-      <Part name={part2} number={exercises2} />
-      <Part name={part3} number={exercises3} />
+      {course.parts.map((part: any) => (
+        <Part key={part.name} name={part.name} number={part.exercises} />
+      ))}
     </>
   );
 };
 
-const Total = ({ exercises1, exercises2, exercises3 }: any) => {
+const Total = ({ course }: any) => {
+  let totalOfExercises = 0;
+  for (let i = 0; i < course.parts.length; i++) {
+    totalOfExercises += course.parts[i].exercises;
+  }
   return (
     <>
-      <p>Number of exercises {exercises1 + exercises2 + exercises3}</p>
+      <p>Number of exercises {totalOfExercises}</p>
     </>
   );
 };
 
 export default function Home() {
+  const course = {
+    name: "Half Stack application development",
+    parts: [
+      {
+        name: "Fundamentals of React",
+        exercises: 10,
+      },
+      {
+        name: "Using props to pass data",
+        exercises: 7,
+      },
+      {
+        name: "State of a component",
+        exercises: 14,
+      },
+    ],
+  };
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div>
         <Header course={course} />
-        <Content
-          part1={part1}
-          part2={part2}
-          part3={part3}
-          exercises1={exercises1}
-          exercises2={exercises2}
-          exercises3={exercises3}
-        />
-        <Total
-          exercises1={exercises1}
-          exercises2={exercises2}
-          exercises3={exercises3}
-        />
+        <Content course={course} />
+        <Total course={course} />
       </div>
     </main>
   );
